@@ -30,7 +30,9 @@ export default function SobrePage() {
       </section>
 
       {/* Imagem editorial full-bleed */}
-      <Placeholder ratio="3:2" label="EDITORIAL — LUMEN" />
+      <Reveal variant="mask">
+        <Placeholder ratio="3:2" label="EDITORIAL — LUMEN" />
+      </Reveal>
 
       {/* Manifesto */}
       <section style={{ paddingTop: "var(--spacing-section)", paddingBottom: "var(--spacing-section)" }}>

@@ -5,6 +5,8 @@ import { Announcement } from "@/components/Announcement";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CartDrawer } from "@/components/CartDrawer";
+import { SmoothScroll } from "@/components/SmoothScroll";
+import { Intro } from "@/components/Intro";
 
 const hanken = Hanken_Grotesk({
   subsets: ["latin"],
@@ -45,6 +47,8 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${hanken.variable} ${spaceMono.variable} ${fraunces.variable}`}>
       <body>
+        <SmoothScroll />
+        <Intro />
         <Announcement />
         <Header />
         <main>{children}</main>

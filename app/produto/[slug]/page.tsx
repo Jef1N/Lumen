@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { PRODUCTS, getProduct } from "@/data/collection";
 import { Placeholder } from "@/components/Placeholder";
 import { ProductDetail } from "@/components/ProductDetail";
+import { Reveal } from "@/components/Reveal";
 
 export function generateStaticParams() {
   return PRODUCTS.map((p) => ({ slug: p.slug }));
@@ -37,11 +38,12 @@ export default async function ProductPage({
         {/* Galeria — sangra à esquerda, empilhada */}
         <div className="flex flex-col gap-2 lg:gap-3">
           {Array.from({ length: product.gallery }).map((_, i) => (
-            <Placeholder
-              key={i}
-              ratio={i === 0 ? "4:5" : "3:2"}
-              label={i === 0 ? product.name.toUpperCase() : `VISTA ${i + 1}`}
-            />
+            <Reveal key={i} variant="mask">
+              <Placeholder
+                ratio={i === 0 ? "4:5" : "3:2"}
+                label={i === 0 ? product.name.toUpperCase() : `VISTA ${i + 1}`}
+              />
+            </Reveal>
           ))}
         </div>
 

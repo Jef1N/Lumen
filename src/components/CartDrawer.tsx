@@ -64,7 +64,7 @@ export function CartDrawer() {
           </div>
         ) : (
           <>
-            <div className="flex-1 overflow-y-auto px-6">
+            <div className="flex-1 overflow-y-auto px-6" data-lenis-prevent>
               {items.map((i) => (
                 <div
                   key={i.key}

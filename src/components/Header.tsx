@@ -58,7 +58,7 @@ export function Header() {
           <div className="flex flex-1 items-center">
             <nav className="hidden items-center gap-8 md:flex">
               {NAV.map((n) => (
-                <Link key={n.href} href={n.href} className="label hover:opacity-60 transition-opacity">
+                <Link key={n.href} href={n.href} className="label link-underline">
                   {n.label}
                 </Link>
               ))}

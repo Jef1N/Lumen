@@ -9,20 +9,23 @@ export default function Home() {
   return (
     <>
       {/* HERO — full-bleed escuro, caption embaixo */}
-      <section className="relative -mt-[68px] h-screen min-h-[640px] w-full bg-ink text-paper">
-        <div className="absolute inset-0">
+      <section className="relative -mt-[68px] h-screen min-h-[640px] w-full overflow-hidden bg-ink text-paper">
+        <div className="hero-zoom absolute inset-0">
           <Placeholder fill tone="ink" label="HERO — EDITORIAL SANTIDADE" />
         </div>
         <div
           className="absolute inset-x-0 bottom-0"
           style={{ paddingLeft: "clamp(16px, 5vw, 64px)", paddingRight: "clamp(16px, 5vw, 64px)", paddingBottom: "clamp(32px, 6vw, 72px)" }}
         >
-          <Label style={{ color: "var(--color-muted-dark)" }}>
-            COLEÇÃO {COLLECTION.name.toUpperCase()} — {COLLECTION.index}
-          </Label>
+          <div className="hero-rise" style={{ ["--hero-delay" as string]: "300ms" }}>
+            <Label style={{ color: "var(--color-muted-dark)" }}>
+              COLEÇÃO {COLLECTION.name.toUpperCase()} — {COLLECTION.index}
+            </Label>
+          </div>
           <h1
-            className="mt-6 max-w-5xl"
+            className="hero-rise mt-6 max-w-5xl"
             style={{
+              ["--hero-delay" as string]: "440ms",
               fontFamily: "var(--font-serif)",
               fontWeight: 300,
               fontSize: "var(--text-display-xl)",
@@ -32,7 +35,7 @@ export default function Home() {
           >
             Vós sois a luz do mundo.
           </h1>
-          <div className="mt-8">
+          <div className="hero-rise mt-8" style={{ ["--hero-delay" as string]: "640ms" }}>
             <GhostLink href="/colecao">VER A COLEÇÃO</GhostLink>
           </div>
         </div>
@@ -84,10 +87,10 @@ export default function Home() {
       </section>
 
       {/* TEASER — banda escura antes do footer */}
-      <section className="relative h-[70vh] min-h-[480px] w-full bg-ink text-paper">
-        <div className="absolute inset-0">
+      <section className="relative h-[70vh] min-h-[480px] w-full overflow-hidden bg-ink text-paper">
+        <Reveal variant="mask" className="absolute inset-0">
           <Placeholder fill tone="ink" label="LOOKBOOK — EM BREVE" />
-        </div>
+        </Reveal>
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center" style={{ paddingLeft: "clamp(16px,5vw,64px)", paddingRight: "clamp(16px,5vw,64px)" }}>
           <Label style={{ color: "var(--color-muted-dark)" }}>PRÓXIMO CAPÍTULO</Label>
           <p
