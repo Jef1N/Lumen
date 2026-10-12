@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+@theme {
+  /* ===== Cores (acromáticas) ===== */
+  --color-ink: #0a0a0a;
+  --color-carbon: #151514;
+  --color-paper: #f4f3ef;
+  --color-paper-pure: #ffffff;
+  --color-placeholder: #d4d2cc;
+  --color-placeholder-ink: #1a1a18;
+  --color-line-light: #e3e1db;
+  --color-line-dark: #2a2a28;
+  --color-muted-light: #6a6963;
+  --color-muted-dark: #8c8b86;
+
+  /* ===== Fontes (variáveis injetadas por next/font) ===== */
+  --font-sans: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-space-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, serif;
+
+  /* ===== Escala de tipo (fluida) ===== */
+  --text-display-xl: clamp(2.75rem, 7vw, 6.5rem);
+  --text-display: clamp(2rem, 4.5vw, 3.75rem);
+  --text-heading: clamp(1.5rem, 2.5vw, 2.25rem);
+  --text-subheading: 1.25rem;
+  --text-body-lg: 1.125rem;
+  --text-body: 1rem;
+  --text-label: 0.75rem;
+  --text-caption: 0.6875rem;
+  --text-verse: clamp(1.25rem, 2vw, 1.75rem);
+
+  /* ===== Espaçamento editorial ===== */
+  --spacing-section: clamp(56px, 10vw, 160px);
+
+  /* ===== Layout ===== */
+  --max-content: 1440px;
+
+  /* ===== Easing editorial ===== */
+  --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Zero radius, zero sombra — regra do sistema */
+* {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.55;
+  font-weight: 400;
+}
+
+::selection {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+/* Classe utilitária para labels mono (voz "código") */
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.caption {
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+/* Reveal on scroll */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s var(--ease-editorial), transform 0.7s var(--ease-editorial);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
