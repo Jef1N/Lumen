@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { useCart, selectSubtotal } from "@/lib/cart";
 import { formatBRL } from "@/lib/format";
@@ -9,6 +10,7 @@ import { Placeholder } from "./Placeholder";
 export function CartDrawer() {
   const { items, isOpen, close, setQty } = useCart();
   const subtotal = useCart(selectSubtotal);
+  const pathname = usePathname();
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
@@ -16,6 +18,11 @@ export function CartDrawer() {
       document.body.style.overflow = "";
     };
   }, [isOpen]);
+
+  // Fecha a sacola ao trocar de rota
+  useEffect(() => {
+    close();
+  }, [pathname, close]);
 
   return (
     <>
