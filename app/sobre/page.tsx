@@ -43,17 +43,11 @@ export default function SobrePage() {
         >
           <Reveal>
             <Placeholder ratio="4:5" />
-            <div className="mt-6">
-              <span className="nav block">LEMOS</span>
-              <span className="caption mt-2 block" style={{ opacity: 0.55 }}>DIREÇÃO CRIATIVA</span>
-            </div>
+            <span className="nav mt-6 block">LEMOS</span>
           </Reveal>
           <Reveal delay={100}>
             <Placeholder ratio="4:5" />
-            <div className="mt-6">
-              <span className="nav block">EDI</span>
-              <span className="caption mt-2 block" style={{ opacity: 0.55 }}>VENDAS & OPERAÇÃO</span>
-            </div>
+            <span className="nav mt-6 block">EDI</span>
           </Reveal>
         </div>
       </Container>
