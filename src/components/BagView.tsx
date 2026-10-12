@@ -10,7 +10,7 @@ export function BagView() {
   const subtotal = useCart(selectSubtotal);
 
   return (
-    <div className="bg-paper" style={{ paddingTop: "clamp(140px, 18vh, 220px)", paddingBottom: "var(--section-gap)", minHeight: "80vh" }}>
+    <div data-header-theme="light" className="bg-paper" style={{ paddingTop: "clamp(140px, 18vh, 220px)", paddingBottom: "var(--section-gap)", minHeight: "80vh" }}>
       <Container>
         <div className="mb-16 text-center">
           <span className="label">SACOLA</span>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCart, selectCount } from "@/lib/cart";
 
 const NAV = [
@@ -11,38 +11,76 @@ const NAV = [
   { href: "/contato", label: "CONTATO" },
 ];
 
+const HEADER_H = 76;
+const LINE = 24; // linha de detecção do fundo, perto do topo do header
+
 export function Header() {
   const pathname = usePathname();
-  const isHome = pathname === "/";
   const count = useCart(selectCount);
   const openCart = useCart((s) => s.open);
 
-  const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">(pathname === "/" ? "dark" : "light");
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
+  const lastY = useRef(0);
+  const ticking = useRef(false);
+
   useEffect(() => setMounted(true), []);
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
   useEffect(() => setMenuOpen(false), [pathname]);
 
-  const transparent = isHome && !scrolled && !menuOpen;
-  const textColor = transparent ? "text-paper" : "text-ink";
+  useEffect(() => {
+    function detectTheme() {
+      const marks = document.querySelectorAll<HTMLElement>("[data-header-theme]");
+      let found: "light" | "dark" | null = null;
+      marks.forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.top <= LINE && r.bottom >= LINE) {
+          found = el.dataset.headerTheme === "dark" ? "dark" : "light";
+        }
+      });
+      if (found) setTheme(found);
+    }
+
+    function onScroll() {
+      if (ticking.current) return;
+      ticking.current = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        const dy = y - lastY.current;
+        if (y < 80) setHidden(false);
+        else if (dy > 3) setHidden(true);
+        else if (dy < -3) setHidden(false);
+        lastY.current = y;
+        detectTheme();
+        ticking.current = false;
+      });
+    }
+
+    lastY.current = window.scrollY;
+    detectTheme();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", detectTheme);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", detectTheme);
+    };
+  }, [pathname]);
+
+  // Com o menu aberto, header sempre visível e em preto sobre o overlay claro.
+  const color = menuOpen ? "text-ink" : theme === "dark" ? "text-paper" : "text-ink";
+  const translated = hidden && !menuOpen ? "-translate-y-full" : "translate-y-0";
 
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-40 transition-colors duration-500 ${
-          transparent ? "bg-transparent" : "bg-paper"
-        } ${textColor}`}
+        className={`fixed inset-x-0 top-0 z-40 transition-transform duration-500 ${translated} ${color}`}
+        style={{ transitionTimingFunction: "var(--ease-editorial)" }}
       >
         <div
           className="flex items-center justify-between"
-          style={{ paddingLeft: "clamp(20px, 6vw, 80px)", paddingRight: "clamp(20px, 6vw, 80px)", height: "76px" }}
+          style={{ paddingLeft: "clamp(20px, 6vw, 80px)", paddingRight: "clamp(20px, 6vw, 80px)", height: `${HEADER_H}px` }}
         >
           <div className="flex flex-1 items-center">
             <nav className="hidden items-center gap-10 md:flex">

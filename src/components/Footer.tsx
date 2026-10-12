@@ -3,7 +3,7 @@ import { NewsletterForm } from "./NewsletterForm";
 
 export function Footer() {
   return (
-    <footer className="bg-ink text-paper">
+    <footer data-header-theme="dark" className="bg-ink text-paper">
       <div style={{ paddingLeft: "clamp(20px, 6vw, 80px)", paddingRight: "clamp(20px, 6vw, 80px)", paddingTop: "96px", paddingBottom: "56px" }}>
         <div className="grid grid-cols-2 gap-x-8 gap-y-16 md:grid-cols-4">
           <nav className="flex flex-col gap-5">

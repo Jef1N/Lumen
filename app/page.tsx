@@ -19,7 +19,7 @@ export default function Home() {
   return (
     <>
       {/* Frame 1 — hero da coleção */}
-      <section className="relative h-screen min-h-[600px] w-full overflow-hidden bg-ink text-paper">
+      <section data-header-theme="dark" className="relative h-screen min-h-[600px] w-full overflow-hidden bg-ink text-paper">
         <div className="hero-zoom absolute inset-0">
           <Placeholder fill tone="ink" />
         </div>
@@ -30,7 +30,7 @@ export default function Home() {
 
       {/* Frames de produto — full-bleed empilhados */}
       {PRODUCTS.map((p) => (
-        <section key={p.slug} className="relative h-screen min-h-[600px] w-full overflow-hidden bg-ink text-paper">
+        <section key={p.slug} data-header-theme="dark" className="relative h-screen min-h-[600px] w-full overflow-hidden bg-ink text-paper">
           <Reveal variant="mask" className="absolute inset-0">
             <Placeholder fill tone="ink" />
           </Reveal>

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function ContatoPage() {
   return (
-    <div className="bg-paper" style={{ minHeight: "80vh" }}>
+    <div data-header-theme="light" className="bg-paper" style={{ minHeight: "80vh" }}>
       <Container>
         <div
           className="mx-auto flex max-w-md flex-col items-center gap-16 text-center"

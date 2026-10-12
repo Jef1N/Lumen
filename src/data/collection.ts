@@ -26,6 +26,20 @@ export const COLLECTION = {
   index: "01",
   statement:
     "A primeira coleção da Lumen. Peças que carregam a mensagem sem precisar anunciá-la.",
+  story: [
+    "Santidade é a primeira coleção da Lumen. Nasceu de uma pergunta simples: como vestir a fé sem que ela vire fantasia.",
+    "Cada peça parte de uma passagem bíblica e a traduz em imagem — a camisa do Brasil em Cristo, a parábola das dez virgens na barra de uma camiseta, o lettering que repete a palavra como quem não esquece. Design primeiro; a mensagem vem com ele.",
+    "Produção em tiragem limitada, enquanto durar o lançamento. Depois, outro capítulo.",
+  ],
+};
+
+export const ABOUT = {
+  lead: "Lumen significa luz.",
+  story: [
+    "A Lumen começou numa vontade específica: produzir camisetas para a igreja que não tivessem cara de camiseta de igreja. Peças que a pessoa veste no dia a dia, no rolê, com orgulho — e que carregam a mensagem junto.",
+    "Streetwear cristão, design de autor. Cada peça nasce de uma passagem e se destaca primeiro pela estética. Quem vê, vê a roupa. A mensagem vem logo atrás, sem precisar gritar.",
+    "Trabalhamos por lançamento, em tiragem limitada. Menos pressa, mais intenção — o melhor design, o melhor material, o melhor posicionamento.",
+  ],
 };
 
 export const PRODUCTS: Product[] = [

@@ -42,7 +42,7 @@ export function CheckoutView() {
 
   if (result) {
     return (
-      <div className="bg-paper" style={{ paddingTop: "clamp(160px, 22vh, 280px)", paddingBottom: "var(--section-gap)", minHeight: "80vh" }}>
+      <div data-header-theme="light" className="bg-paper" style={{ paddingTop: "clamp(160px, 22vh, 280px)", paddingBottom: "var(--section-gap)", minHeight: "80vh" }}>
         <Container>
           <div className="mx-auto max-w-md text-center">
             <span className="label">PEDIDO RECEBIDO</span>
@@ -59,7 +59,7 @@ export function CheckoutView() {
 
   if (items.length === 0) {
     return (
-      <div className="bg-paper" style={{ paddingTop: "clamp(160px, 22vh, 280px)", paddingBottom: "var(--section-gap)", minHeight: "80vh" }}>
+      <div data-header-theme="light" className="bg-paper" style={{ paddingTop: "clamp(160px, 22vh, 280px)", paddingBottom: "var(--section-gap)", minHeight: "80vh" }}>
         <Container>
           <div className="flex flex-col items-center gap-8 text-center">
             <span className="caption" style={{ opacity: 0.55 }}>SUA SACOLA ESTÁ VAZIA</span>
@@ -71,7 +71,7 @@ export function CheckoutView() {
   }
 
   return (
-    <div className="bg-paper" style={{ paddingTop: "clamp(140px, 18vh, 220px)", paddingBottom: "var(--section-gap)" }}>
+    <div data-header-theme="light" className="bg-paper" style={{ paddingTop: "clamp(140px, 18vh, 220px)", paddingBottom: "var(--section-gap)" }}>
       <Container>
         <div className="mb-16 text-center">
           <span className="label">CHECKOUT</span>
