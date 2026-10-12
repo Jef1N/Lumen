@@ -1,11 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { Product } from "@/data/collection";
 import { formatBRL } from "@/lib/format";
 import { useCart } from "@/lib/cart";
-import { Button, VerseBlock } from "@/components/ui";
+import { Button } from "@/components/ui";
 
 export function ProductDetail({ product }: { product: Product }) {
   const add = useCart((s) => s.add);
@@ -31,51 +30,33 @@ export function ProductDetail({ product }: { product: Product }) {
   }
 
   return (
-    <div className="lg:sticky lg:top-[68px] lg:h-fit">
+    <div className="lg:sticky lg:top-0 lg:h-screen lg:self-start">
       <div
-        className="flex flex-col"
+        className="flex h-full flex-col justify-center"
         style={{
-          paddingLeft: "clamp(16px, 5vw, 80px)",
-          paddingRight: "clamp(16px, 5vw, 80px)",
-          paddingTop: "clamp(48px, 7vw, 96px)",
-          paddingBottom: "clamp(48px, 7vw, 96px)",
+          paddingLeft: "clamp(20px, 6vw, 96px)",
+          paddingRight: "clamp(20px, 6vw, 96px)",
+          paddingTop: "clamp(64px, 10vh, 120px)",
+          paddingBottom: "clamp(64px, 10vh, 120px)",
         }}
       >
-        <Link href="/colecao" className="caption mb-10 hover:opacity-60" style={{ color: "var(--color-muted-light)" }}>
-          ← COLEÇÃO SANTIDADE
-        </Link>
+        <h1 className="nav" style={{ fontSize: "1rem", letterSpacing: "0.14em" }}>{product.name}</h1>
+        <span className="nav mt-5">{formatBRL(product.price)}</span>
 
-        <span className="caption" style={{ color: "var(--color-muted-light)" }}>
-          {product.category}
-        </span>
-        <h1 className="mt-2" style={{ fontFamily: "var(--font-sans)", fontWeight: 300, fontSize: "var(--text-display)", lineHeight: 1.05 }}>
-          {product.name}
-        </h1>
-        <span className="label mt-4">{formatBRL(product.price)}</span>
-
-        {/* Versículo da peça */}
-        <div className="my-10 border-y py-8" style={{ borderColor: "var(--color-line-light)" }}>
-          <VerseBlock verse={product.verse} reference={product.verseRef} />
-        </div>
-
-        <p className="max-w-md" style={{ fontWeight: 300, fontSize: "var(--text-body-lg)", lineHeight: 1.6 }}>
-          {product.description}
-        </p>
-
-        {/* Variantes */}
+        {/* Cor */}
         {product.variants && (
-          <div className="mt-10">
-            <span className="caption" style={{ color: "var(--color-muted-light)" }}>COR</span>
-            <div className="mt-3 flex flex-wrap gap-3">
+          <div className="mt-14">
+            <span className="caption" style={{ opacity: 0.55 }}>COR</span>
+            <div className="mt-4 flex flex-wrap gap-3">
               {product.variants.map((v) => (
                 <button
                   key={v.id}
                   onClick={() => setVariant(v.id)}
-                  className="label border px-5 py-3 transition-colors duration-200"
+                  className="nav border px-5 py-3 transition-colors duration-300"
                   style={
                     variant === v.id
                       ? { background: "var(--color-ink)", color: "var(--color-paper)", borderColor: "var(--color-ink)" }
-                      : { borderColor: "var(--color-line-light)" }
+                      : { borderColor: "var(--color-line)" }
                   }
                 >
                   {v.label}
@@ -85,43 +66,35 @@ export function ProductDetail({ product }: { product: Product }) {
           </div>
         )}
 
-        {/* Tamanhos */}
-        <div className="mt-8">
-          <span className="caption" style={{ color: "var(--color-muted-light)" }}>TAMANHO</span>
-          <div className="mt-3 flex flex-wrap gap-3">
+        {/* Tamanho */}
+        <div className="mt-10">
+          <span className="caption" style={{ opacity: 0.55 }}>TAMANHO</span>
+          <div className="mt-4 flex flex-wrap gap-3">
             {product.sizes.map((s) => (
               <button
                 key={s}
-                onClick={() => {
-                  setSize(s);
-                  setError(false);
-                }}
-                className="label border px-5 py-3 transition-colors duration-200"
+                onClick={() => { setSize(s); setError(false); }}
+                className="nav border px-5 py-3 transition-colors duration-300"
                 style={
                   size === s
                     ? { background: "var(--color-ink)", color: "var(--color-paper)", borderColor: "var(--color-ink)" }
-                    : { borderColor: "var(--color-line-light)" }
+                    : { borderColor: "var(--color-line)" }
                 }
               >
                 {s}
               </button>
             ))}
           </div>
-          {error && (
-            <p className="caption mt-3" style={{ color: "var(--color-ink)" }}>
-              SELECIONE UM TAMANHO
-            </p>
-          )}
+          {error && <p className="caption mt-4" style={{ opacity: 0.55 }}>SELECIONE UM TAMANHO</p>}
         </div>
 
-        <div className="mt-10">
-          <Button full onClick={handleAdd}>
-            ADICIONAR À SACOLA
-          </Button>
+        <div className="mt-14">
+          <Button full onClick={handleAdd}>ADICIONAR À SACOLA</Button>
         </div>
 
-        <p className="caption mt-5" style={{ color: "var(--color-muted-light)" }}>
-          ESTOQUE LIMITADO · ENQUANTO DURAR A COLEÇÃO
+        {/* Descrição — pequena, discreta */}
+        <p className="mt-14 max-w-sm" style={{ fontSize: "var(--text-body)", lineHeight: 1.7, opacity: 0.7 }}>
+          {product.description}
         </p>
       </div>
     </div>

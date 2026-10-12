@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { CSSProperties, ReactNode } from "react";
 
-/* Container centralizado com margens laterais fluidas */
+/* Container centralizado — respiro lateral amplo */
 export function Container({
   children,
   className = "",
@@ -15,9 +15,9 @@ export function Container({
     <div
       className={`mx-auto w-full ${className}`}
       style={{
-        maxWidth: wide ? "var(--max-content)" : "1200px",
-        paddingLeft: "clamp(16px, 5vw, 64px)",
-        paddingRight: "clamp(16px, 5vw, 64px)",
+        maxWidth: wide ? "1600px" : "1200px",
+        paddingLeft: "clamp(20px, 6vw, 80px)",
+        paddingRight: "clamp(20px, 6vw, 80px)",
       }}
     >
       {children}
@@ -25,24 +25,7 @@ export function Container({
   );
 }
 
-/* Eyebrow / label mono caixa alta */
-export function Label({
-  children,
-  className = "",
-  style,
-}: {
-  children: ReactNode;
-  className?: string;
-  style?: CSSProperties;
-}) {
-  return (
-    <span className={`label ${className}`} style={style}>
-      {children}
-    </span>
-  );
-}
-
-/* Botão sólido (único controle de alta ênfase) */
+/* Botão sólido — flip de valor no hover (único controle de ênfase) */
 export function Button({
   children,
   href,
@@ -62,16 +45,13 @@ export function Button({
   disabled?: boolean;
   className?: string;
 }) {
-  const base =
-    "label inline-flex items-center justify-center border transition-colors duration-200";
+  const base = "nav inline-flex items-center justify-center border transition-colors duration-300";
   const tones =
     tone === "ink"
-      ? "bg-ink text-paper border-ink hover:bg-transparent hover:text-ink"
+      ? "bg-ink text-paper border-ink hover:bg-paper hover:text-ink"
       : "bg-transparent text-paper border-paper hover:bg-paper hover:text-ink";
-  const cls = `${base} ${tones} ${full ? "w-full" : ""} ${
-    disabled ? "pointer-events-none opacity-40" : ""
-  } ${className}`;
-  const pad = { padding: "16px 32px" } as CSSProperties;
+  const cls = `${base} ${tones} ${full ? "w-full" : ""} ${disabled ? "pointer-events-none opacity-40" : ""} ${className}`;
+  const pad = { padding: "18px 40px" } as CSSProperties;
 
   if (href && !disabled) {
     return (
@@ -87,7 +67,7 @@ export function Button({
   );
 }
 
-/* Ghost link — ação secundária, underline */
+/* Link de texto — underline, caixa alta tracked */
 export function GhostLink({
   children,
   href,
@@ -99,7 +79,7 @@ export function GhostLink({
   onClick?: () => void;
   className?: string;
 }) {
-  const cls = `label inline-block border-b border-current pb-1 transition-opacity duration-200 hover:opacity-60 ${className}`;
+  const cls = `nav inline-block border-b border-current pb-[3px] transition-opacity duration-300 hover:opacity-60 ${className}`;
   if (href) {
     return (
       <Link href={href} className={cls}>
@@ -111,38 +91,5 @@ export function GhostLink({
     <button type="button" onClick={onClick} className={cls}>
       {children}
     </button>
-  );
-}
-
-/* Bloco de versículo — voz serif (sagrada) */
-export function VerseBlock({
-  verse,
-  reference,
-  tone = "light",
-  className = "",
-}: {
-  verse: string;
-  reference: string;
-  tone?: "light" | "ink";
-  className?: string;
-}) {
-  const muted = tone === "ink" ? "var(--color-muted-dark)" : "var(--color-muted-light)";
-  return (
-    <figure className={className}>
-      <blockquote
-        style={{
-          fontFamily: "var(--font-serif)",
-          fontStyle: "italic",
-          fontWeight: 300,
-          fontSize: "var(--text-verse)",
-          lineHeight: 1.4,
-        }}
-      >
-        “{verse}”
-      </blockquote>
-      <figcaption className="caption mt-4" style={{ color: muted }}>
-        {reference}
-      </figcaption>
-    </figure>
   );
 }

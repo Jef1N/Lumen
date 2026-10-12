@@ -5,30 +5,21 @@ import Link from "next/link";
 import { useCart, selectSubtotal } from "@/lib/cart";
 import { formatBRL } from "@/lib/format";
 import { paymentProvider, type CustomerInfo } from "@/lib/payment";
-import { Container, Label, Button, GhostLink } from "./ui";
+import { Container, Button, GhostLink } from "./ui";
 
-const FIELDS: {
-  name: keyof CustomerInfo;
-  label: string;
-  type?: string;
-  span?: "full" | "half";
-  required?: boolean;
-}[] = [
-  { name: "name", label: "NOME COMPLETO", span: "full", required: true },
-  { name: "email", label: "E-MAIL", type: "email", span: "half", required: true },
-  { name: "phone", label: "TELEFONE", type: "tel", span: "half", required: true },
-  { name: "cep", label: "CEP", span: "half", required: true },
-  { name: "address", label: "ENDEREÇO", span: "full", required: true },
-  { name: "number", label: "NÚMERO", span: "half", required: true },
-  { name: "complement", label: "COMPLEMENTO", span: "half" },
-  { name: "city", label: "CIDADE", span: "half", required: true },
-  { name: "state", label: "ESTADO", span: "half", required: true },
+const FIELDS: { name: keyof CustomerInfo; label: string; type?: string; required?: boolean }[] = [
+  { name: "name", label: "NOME COMPLETO", required: true },
+  { name: "email", label: "E-MAIL", type: "email", required: true },
+  { name: "phone", label: "TELEFONE", type: "tel", required: true },
+  { name: "cep", label: "CEP", required: true },
+  { name: "address", label: "ENDEREÇO", required: true },
+  { name: "number", label: "NÚMERO", required: true },
+  { name: "complement", label: "COMPLEMENTO" },
+  { name: "city", label: "CIDADE", required: true },
+  { name: "state", label: "ESTADO", required: true },
 ];
 
-const EMPTY: CustomerInfo = {
-  name: "", email: "", phone: "", cep: "", address: "",
-  number: "", complement: "", city: "", state: "",
-};
+const EMPTY: CustomerInfo = { name: "", email: "", phone: "", cep: "", address: "", number: "", complement: "", city: "", state: "" };
 
 export function CheckoutView() {
   const { items, clear } = useCart();
@@ -43,32 +34,20 @@ export function CheckoutView() {
     setSubmitting(true);
     const res = await paymentProvider.createCheckout({ items, customer: form, subtotal });
     setSubmitting(false);
-
-    if (res.status === "redirect") {
-      window.location.href = res.url;
-      return;
-    }
-    if (res.status === "error") {
-      setResult(res.message);
-      return;
-    }
-    // pending (placeholder atual)
+    if (res.status === "redirect") { window.location.href = res.url; return; }
     setResult(res.message);
-    if (res.whatsappUrl) setWhatsapp(res.whatsappUrl);
-    clear();
+    if (res.status === "pending" && res.whatsappUrl) setWhatsapp(res.whatsappUrl);
+    if (res.status === "pending") clear();
   }
 
-  // Confirmação pós-pedido
   if (result) {
     return (
-      <div className="bg-paper" style={{ paddingTop: "clamp(120px, 16vw, 220px)", paddingBottom: "var(--spacing-section)", minHeight: "70vh" }}>
+      <div className="bg-paper" style={{ paddingTop: "clamp(160px, 22vh, 280px)", paddingBottom: "var(--section-gap)", minHeight: "80vh" }}>
         <Container>
-          <div className="mx-auto max-w-2xl text-center">
-            <Label style={{ color: "var(--color-muted-light)" }}>PEDIDO RECEBIDO</Label>
-            <p className="mt-8" style={{ fontFamily: "var(--font-serif)", fontWeight: 300, fontSize: "var(--text-display)", lineHeight: 1.1 }}>
-              {result}
-            </p>
-            <div className="mt-10 flex flex-col items-center gap-5">
+          <div className="mx-auto max-w-md text-center">
+            <span className="label">PEDIDO RECEBIDO</span>
+            <p className="mt-10" style={{ fontSize: "var(--text-body)", lineHeight: 1.9 }}>{result}</p>
+            <div className="mt-12 flex flex-col items-center gap-6">
               {whatsapp && <Button href={whatsapp}>FINALIZAR NO WHATSAPP</Button>}
               <GhostLink href="/colecao">VOLTAR À COLEÇÃO</GhostLink>
             </div>
@@ -80,13 +59,10 @@ export function CheckoutView() {
 
   if (items.length === 0) {
     return (
-      <div className="bg-paper" style={{ paddingTop: "clamp(120px, 16vw, 220px)", paddingBottom: "var(--spacing-section)", minHeight: "70vh" }}>
+      <div className="bg-paper" style={{ paddingTop: "clamp(160px, 22vh, 280px)", paddingBottom: "var(--section-gap)", minHeight: "80vh" }}>
         <Container>
-          <div className="flex flex-col items-start gap-6">
-            <Label style={{ color: "var(--color-muted-light)" }}>CHECKOUT</Label>
-            <p style={{ fontFamily: "var(--font-serif)", fontWeight: 300, fontSize: "var(--text-display)" }}>
-              Sua sacola está vazia.
-            </p>
+          <div className="flex flex-col items-center gap-8 text-center">
+            <span className="caption" style={{ opacity: 0.55 }}>SUA SACOLA ESTÁ VAZIA</span>
             <GhostLink href="/colecao">VER A COLEÇÃO</GhostLink>
           </div>
         </Container>
@@ -95,75 +71,59 @@ export function CheckoutView() {
   }
 
   return (
-    <div className="bg-paper" style={{ paddingTop: "clamp(96px, 12vw, 160px)", paddingBottom: "var(--spacing-section)" }}>
+    <div className="bg-paper" style={{ paddingTop: "clamp(140px, 18vh, 220px)", paddingBottom: "var(--section-gap)" }}>
       <Container>
-        <Label style={{ color: "var(--color-muted-light)" }}>CHECKOUT</Label>
-        <div className="mt-12 grid grid-cols-1 gap-16 lg:grid-cols-12">
-          {/* Formulário */}
+        <div className="mb-16 text-center">
+          <span className="label">CHECKOUT</span>
+        </div>
+        <div className="grid grid-cols-1 gap-16 lg:grid-cols-12">
           <form onSubmit={onSubmit} className="lg:col-span-7">
-            <span className="caption" style={{ color: "var(--color-muted-light)" }}>CONTATO & ENTREGA</span>
-            <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-8">
+            <div className="grid grid-cols-2 gap-x-8 gap-y-10">
               {FIELDS.map((f) => (
-                <label key={f.name} className={f.span === "full" ? "col-span-2" : "col-span-2 sm:col-span-1"}>
-                  <span className="caption block" style={{ color: "var(--color-muted-light)" }}>
-                    {f.label}{f.required ? "" : " (OPCIONAL)"}
-                  </span>
+                <label key={f.name} className="col-span-2 sm:col-span-1">
+                  <span className="caption block" style={{ opacity: 0.55 }}>{f.label}{f.required ? "" : " (OPCIONAL)"}</span>
                   <input
                     type={f.type ?? "text"}
                     required={f.required}
                     value={form[f.name] ?? ""}
                     onChange={(e) => setForm((s) => ({ ...s, [f.name]: e.target.value }))}
-                    className="mt-2 w-full bg-transparent pb-2 outline-none"
-                    style={{ borderBottom: "1px solid var(--color-line-light)", fontFamily: "var(--font-sans)", fontSize: "var(--text-body)" }}
+                    className="mt-3 w-full bg-transparent pb-3 outline-none"
+                    style={{ borderBottom: "1px solid var(--color-line)", fontSize: "var(--text-body)" }}
                   />
                 </label>
               ))}
             </div>
 
-            {/* Pagamento (abstraído) */}
-            <div className="mt-12 border-t pt-8" style={{ borderColor: "var(--color-line-light)" }}>
-              <span className="caption" style={{ color: "var(--color-muted-light)" }}>PAGAMENTO</span>
-              <p className="mt-4 max-w-md" style={{ fontWeight: 300, color: "var(--color-muted-light)" }}>
-                O pagamento online está sendo configurado. Ao confirmar, seu pedido
-                é registrado e a finalização é combinada com a gente.
-              </p>
-            </div>
+            <p className="mt-16 max-w-md" style={{ fontSize: "var(--text-body)", lineHeight: 1.8, opacity: 0.65 }}>
+              O pagamento online está sendo configurado. Ao confirmar, seu pedido é registrado e a finalização é combinada com a gente.
+            </p>
 
-            <div className="mt-10">
+            <div className="mt-12">
               <Button type="submit" full disabled={submitting}>
                 {submitting ? "PROCESSANDO…" : "CONFIRMAR PEDIDO"}
               </Button>
             </div>
           </form>
 
-          {/* Resumo sticky */}
           <aside className="lg:col-span-4 lg:col-start-9">
-            <div className="lg:sticky lg:top-[92px]">
-              <span className="caption" style={{ color: "var(--color-muted-light)" }}>SEU PEDIDO</span>
-              <div className="mt-6 flex flex-col gap-5">
+            <div className="lg:sticky lg:top-28">
+              <div className="flex flex-col gap-6">
                 {items.map((i) => (
                   <div key={i.key} className="flex items-start justify-between gap-4">
                     <div>
-                      <span style={{ fontFamily: "var(--font-sans)", fontWeight: 400 }}>{i.name}</span>
-                      <span className="caption block mt-1" style={{ color: "var(--color-muted-light)" }}>
-                        {[i.variant, i.size, `x${i.qty}`].filter(Boolean).join(" · ")}
-                      </span>
+                      <span className="nav">{i.name}</span>
+                      <span className="caption mt-2 block" style={{ opacity: 0.55 }}>{[i.variant, i.size, `x${i.qty}`].filter(Boolean).join(" · ")}</span>
                     </div>
-                    <span className="label whitespace-nowrap">{formatBRL(i.price * i.qty)}</span>
+                    <span className="nav whitespace-nowrap">{formatBRL(i.price * i.qty)}</span>
                   </div>
                 ))}
               </div>
-              <div className="mt-8 flex items-center justify-between border-t py-5" style={{ borderColor: "var(--color-line-light)" }}>
-                <span className="label">SUBTOTAL</span>
-                <span className="label">{formatBRL(subtotal)}</span>
+              <div className="mt-10 flex items-center justify-between border-t py-5" style={{ borderColor: "var(--color-line)" }}>
+                <span className="nav">SUBTOTAL</span>
+                <span className="nav">{formatBRL(subtotal)}</span>
               </div>
-              <p className="caption" style={{ color: "var(--color-muted-light)" }}>
-                FRETE A COMBINAR · ESTOQUE LIMITADO
-              </p>
-              <div className="mt-6">
-                <Link href="/sacola" className="caption hover:opacity-60" style={{ color: "var(--color-muted-light)" }}>
-                  ← EDITAR SACOLA
-                </Link>
+              <div className="mt-8">
+                <Link href="/sacola" className="caption link-underline" style={{ opacity: 0.55 }}>EDITAR SACOLA</Link>
               </div>
             </div>
           </aside>

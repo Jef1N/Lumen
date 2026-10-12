@@ -9,25 +9,13 @@ export function generateStaticParams() {
   return PRODUCTS.map((p) => ({ slug: p.slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const product = getProduct(slug);
-  if (!product) return { title: "Produto — LUMEN" };
-  return {
-    title: `${product.name} — LUMEN`,
-    description: product.description,
-  };
+  return { title: product ? `${product.name} — LUMEN` : "LUMEN" };
 }
 
-export default async function ProductPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const product = getProduct(slug);
   if (!product) notFound();
@@ -35,19 +23,13 @@ export default async function ProductPage({
   return (
     <div className="bg-paper">
       <div className="grid grid-cols-1 lg:grid-cols-2">
-        {/* Galeria — sangra à esquerda, empilhada */}
-        <div className="flex flex-col gap-2 lg:gap-3">
+        <div className="flex flex-col gap-2">
           {Array.from({ length: product.gallery }).map((_, i) => (
             <Reveal key={i} variant="mask">
-              <Placeholder
-                ratio={i === 0 ? "4:5" : "3:2"}
-                label={i === 0 ? product.name.toUpperCase() : `VISTA ${i + 1}`}
-              />
+              <Placeholder ratio={i === 0 ? "4:5" : "3:2"} />
             </Reveal>
           ))}
         </div>
-
-        {/* Info — sticky à direita */}
         <ProductDetail product={product} />
       </div>
     </div>

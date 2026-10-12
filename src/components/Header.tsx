@@ -22,90 +22,58 @@ export function Header() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
-
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+  useEffect(() => setMenuOpen(false), [pathname]);
 
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname]);
-
-  // Transparente (texto claro) só no topo da home; sólido (texto ink) nas demais.
   const transparent = isHome && !scrolled && !menuOpen;
   const textColor = transparent ? "text-paper" : "text-ink";
 
   return (
     <>
       <header
-        className={`sticky top-0 z-40 transition-colors duration-300 ${
-          transparent ? "bg-transparent" : "bg-paper border-b border-line-light"
+        className={`fixed inset-x-0 top-0 z-40 transition-colors duration-500 ${
+          transparent ? "bg-transparent" : "bg-paper"
         } ${textColor}`}
       >
         <div
-          className="mx-auto flex items-center justify-between"
-          style={{
-            maxWidth: "var(--max-content)",
-            paddingLeft: "clamp(16px, 5vw, 64px)",
-            paddingRight: "clamp(16px, 5vw, 64px)",
-            height: "68px",
-          }}
+          className="flex items-center justify-between"
+          style={{ paddingLeft: "clamp(20px, 6vw, 80px)", paddingRight: "clamp(20px, 6vw, 80px)", height: "76px" }}
         >
-          {/* Esquerda: nav desktop + toggle mobile */}
           <div className="flex flex-1 items-center">
-            <nav className="hidden items-center gap-8 md:flex">
+            <nav className="hidden items-center gap-10 md:flex">
               {NAV.map((n) => (
-                <Link key={n.href} href={n.href} className="label link-underline">
+                <Link key={n.href} href={n.href} className="nav link-underline">
                   {n.label}
                 </Link>
               ))}
             </nav>
-            <button
-              className="label md:hidden"
-              onClick={() => setMenuOpen((v) => !v)}
-              aria-label="Menu"
-            >
+            <button className="nav md:hidden" onClick={() => setMenuOpen((v) => !v)} aria-label="Menu">
               {menuOpen ? "FECHAR" : "MENU"}
             </button>
           </div>
 
-          {/* Centro: wordmark (placeholder até o logo chegar) */}
-          <Link
-            href="/"
-            className="flex-1 text-center"
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 500,
-              letterSpacing: "0.3em",
-              fontSize: "1.125rem",
-            }}
-          >
+          <Link href="/" className="wordmark flex-1 text-center" style={{ fontSize: "1.75rem" }}>
             LUMEN
           </Link>
 
-          {/* Direita: sacola */}
           <div className="flex flex-1 items-center justify-end">
-            <button className="label hover:opacity-60 transition-opacity" onClick={openCart}>
+            <button className="nav link-underline" onClick={openCart}>
               SACOLA ({mounted ? count : 0})
             </button>
           </div>
         </div>
       </header>
 
-      {/* Overlay de menu mobile */}
       {menuOpen && (
-        <div className="fixed inset-0 z-30 bg-paper pt-[68px] md:hidden">
-          <nav className="flex flex-col gap-8 px-6 py-12">
+        <div className="fixed inset-0 z-30 bg-paper pt-[76px] md:hidden">
+          <nav className="flex flex-col gap-10 px-6 py-16">
             {NAV.map((n) => (
-              <Link
-                key={n.href}
-                href={n.href}
-                className="text-ink"
-                style={{ fontFamily: "var(--font-sans)", fontWeight: 300, fontSize: "var(--text-heading)" }}
-              >
+              <Link key={n.href} href={n.href} className="nav text-ink" style={{ fontSize: "1rem" }}>
                 {n.label}
               </Link>
             ))}
